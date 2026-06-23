@@ -3,12 +3,22 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { formatDate } from "../utils/formatDate";
 
 export default function TaskItem({ task, onPress, onToggle, onDelete }) {
+  function handleTogglePress(event) {
+    event.stopPropagation();
+    onToggle();
+  }
+
+  function handleDeletePress(event) {
+    event.stopPropagation();
+    onDelete();
+  }
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
       <View style={styles.row}>
         <TouchableOpacity
           style={[styles.checkbox, task.completed && styles.checkedBox]}
-          onPress={onToggle}
+          onPress={handleTogglePress}
         >
           <Text style={styles.checkText}>{task.completed ? "✓" : ""}</Text>
         </TouchableOpacity>
@@ -26,7 +36,7 @@ export default function TaskItem({ task, onPress, onToggle, onDelete }) {
           <Text style={styles.date}>Created {formatDate(task.createdAt)}</Text>
         </View>
 
-        <TouchableOpacity style={styles.deleteButton} onPress={onDelete}>
+        <TouchableOpacity style={styles.deleteButton} onPress={handleDeletePress}>
           <Text style={styles.deleteText}>Delete</Text>
         </TouchableOpacity>
       </View>
