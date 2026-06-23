@@ -4,12 +4,7 @@
     "slug": "pritech-tasks",
     "version": "1.0.0",
     "orientation": "portrait",
-    "jsEngine": "jsc",
     "userInterfaceStyle": "light",
-    "splash": {
-      "resizeMode": "contain",
-      "backgroundColor": "#f7f8fb"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -23,6 +18,15 @@
     "web": {
       "bundler": "metro"
     },
-    "scheme": "pritechtasks"
+    "scheme": "pritechtasks",
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#f7f8fb",
+          "imageWidth": 200
+        }
+      ]
+    ]
   }
 }
