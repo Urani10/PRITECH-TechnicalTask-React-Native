@@ -13,12 +13,25 @@ export default function TaskForm({ onSubmit }) {
   const [error, setError] = useState("");
 
   function handleSubmit() {
-    if (!title.trim()) {
+    const cleanTitle = title.trim();
+    const cleanDescription = description.trim();
+
+    if (!cleanTitle) {
       setError("Title is required.");
       return;
     }
 
-    onSubmit({ title, description });
+    if (cleanTitle.length < 3) {
+      setError("Title must be at least 3 characters.");
+      return;
+    }
+
+    if (cleanDescription.length > 160) {
+      setError("Description must be 160 characters or less.");
+      return;
+    }
+
+    onSubmit({ title: cleanTitle, description: cleanDescription });
     setTitle("");
     setDescription("");
     setError("");
@@ -33,7 +46,11 @@ export default function TaskForm({ onSubmit }) {
         placeholder="Task title"
         placeholderTextColor="#8a94a6"
         value={title}
-        onChangeText={setTitle}
+        maxLength={60}
+        onChangeText={(value) => {
+          setTitle(value);
+          setError("");
+        }}
       />
 
       <TextInput
@@ -43,8 +60,16 @@ export default function TaskForm({ onSubmit }) {
         placeholderTextColor="#8a94a6"
         textAlignVertical="top"
         value={description}
-        onChangeText={setDescription}
+        maxLength={160}
+        onChangeText={(value) => {
+          setDescription(value);
+          setError("");
+        }}
       />
+
+      <Text style={styles.helperText}>
+        {description.trim().length}/160 characters
+      </Text>
 
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
@@ -82,6 +107,13 @@ const styles = StyleSheet.create({
   },
   descriptionInput: {
     minHeight: 86,
+  },
+  helperText: {
+    color: "#8a94a6",
+    fontSize: 12,
+    marginBottom: 10,
+    marginTop: -4,
+    textAlign: "right",
   },
   errorText: {
     color: "#d92d20",
