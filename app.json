@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "PRITECH Tasks",
+    "slug": "pritech-tasks",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "jsEngine": "jsc",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#f7f8fb"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.pritech.tasks"
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
