@@ -10,15 +10,19 @@
       "resizeMode": "contain",
       "backgroundColor": "#f7f8fb"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pritech.tasks"
     },
     "android": {
       "package": "com.pritech.tasks"
     },
     "web": {
       "bundler": "metro"
-    }
+    },
+    "scheme": "pritechtasks"
   }
 }

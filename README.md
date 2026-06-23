@@ -33,13 +33,28 @@ Install dependencies:
 npm install
 ```
 
-Start the app:
+Start the app in Expo Go mode:
 
 ```bash
 npm start
 ```
 
-Then open the app with Expo Go on a mobile device, Android emulator, or iOS simulator.
+Then open the app with Expo Go on a mobile device, Android emulator, or iOS simulator. The `npm start` script intentionally uses `expo start --go` so Expo does not try to launch a development build unless you explicitly run `npm run start:dev-client`.
+
+### Open on an iPhone 15 with Expo Go
+
+1. Install **Expo Go** from the App Store on the iPhone 15.
+2. Make sure the iPhone and development computer are connected to the same Wi-Fi network.
+3. Run `npm start` in this project.
+4. When the Expo terminal/Metro page shows a QR code, open the iPhone Camera app and scan it.
+5. Tap the Expo Go notification/link to launch the app on the iPhone.
+
+If the QR code does not connect because of a network restriction, run `npm run start:tunnel` and scan the new QR code.
+
+### Troubleshooting Expo Go QR errors
+
+- If you see `Unable to get the default URI scheme for the project`, make sure you are using `npm start`, not `npx expo start --dev-client`. Development builds require `expo-dev-client`; Expo Go does not. This project also defines the app scheme as `pritechtasks` in `app.json` so Expo has a default scheme when one is needed.
+- If Expo Go says an error occurred immediately after scanning the QR code, check the Expo SDK version shown in the terminal. This project currently uses Expo SDK 51. Current Expo Go versions only support the latest SDK, so a newer App Store version of Expo Go can reject older SDK projects. In that case, either upgrade the project with `npx expo install expo@latest && npx expo install --fix`, or run a development build with `npx expo install expo-dev-client` followed by an EAS/local development build.
 
 ### Open on an iPhone 15 with Expo Go
 
@@ -56,6 +71,8 @@ If the QR code does not connect because of a network restriction, press `s` in t
 ```bash
 npm run android
 npm run ios
+npm run start:tunnel
+npm run start:dev-client
 ```
 
 ## Project structure
