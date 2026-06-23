@@ -107,4 +107,8 @@ The app keeps navigation simple by switching between the task list and detail vi
 
 ## Screenshots / recording
 
-Before submitting, add screenshots or a short screen recording that shows adding, completing, deleting, filtering, searching, details, persistence after reload, and the API suggestion flow.
+Below is the screen recording demonstrating the key application features, including task creation, completion toggles, local persistence validation, filtering options, and the public API integration flow.
+
+<video src="PRITECH Video Task.mov" controls="controls" muted="muted" style="max-width: 100%; max-height: 600px;">
+  Your browser does not support the video tag.
+</video>
