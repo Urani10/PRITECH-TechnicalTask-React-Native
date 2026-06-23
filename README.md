@@ -109,6 +109,8 @@ The app keeps navigation simple by switching between the task list and detail vi
 
 Below is the screen recording demonstrating the key application features, including task creation, completion toggles, local persistence validation, filtering options, and the public API integration flow.
 
-<video src="PRITECH Video Task.mov" controls="controls" muted="muted" style="max-width: 100%; max-height: 600px;">
-  Your browser does not support the video tag.
-</video>
+
+
+https://github.com/user-attachments/assets/0501c1ae-579b-485c-9c16-5c10aebd399c
+
+
