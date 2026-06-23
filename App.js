@@ -16,6 +16,7 @@ import EmptyState from "./src/components/EmptyState";
 import FilterTabs from "./src/components/FilterTabs";
 import TaskForm from "./src/components/TaskForm";
 import TaskItem from "./src/components/TaskItem";
+import TaskSummary from "./src/components/TaskSummary";
 import { formatDate } from "./src/utils/formatDate";
 import { loadTasks, saveTasks } from "./src/storage/tasksStorage";
 
@@ -31,6 +32,7 @@ export default function App() {
   const [searchText, setSearchText] = useState("");
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [apiTask, setApiTask] = useState(null);
+  const [apiError, setApiError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchingApiTask, setIsFetchingApiTask] = useState(false);
 
@@ -70,20 +72,29 @@ export default function App() {
   }, [activeFilter, searchText, tasks]);
 
   const selectedTask = tasks.find((task) => task.id === selectedTaskId);
+  const completedTasksCount = tasks.filter((task) => task.completed).length;
 
   async function fetchApiTask() {
     try {
       setIsFetchingApiTask(true);
+      setApiError("");
+      const randomTodoId = Math.floor(Math.random() * 200) + 1;
       const response = await fetch(
-        "https://jsonplaceholder.typicode.com/todos/1"
+        `https://jsonplaceholder.typicode.com/todos/${randomTodoId}`
       );
+
+      if (!response.ok) {
+        throw new Error("Unable to fetch suggestion");
+      }
+
       const data = await response.json();
       setApiTask({
         title: data.title,
-        description: "Suggested from JSONPlaceholder public API.",
+        description: `Suggested from JSONPlaceholder public API. Source todo #${data.id}.`,
       });
     } catch (error) {
       setApiTask(null);
+      setApiError("Could not load a task suggestion. Please try again.");
     } finally {
       setIsFetchingApiTask(false);
     }
@@ -107,7 +118,7 @@ export default function App() {
     }
 
     handleAddTask(apiTask);
-    setApiTask(null);
+    fetchApiTask();
   }
 
   function handleToggleTask(taskId) {
@@ -208,6 +219,11 @@ export default function App() {
           </Text>
         </View>
 
+        <TaskSummary
+          totalTasks={tasks.length}
+          completedTasks={completedTasksCount}
+        />
+
         <TaskForm onSubmit={handleAddTask} />
 
         <View style={styles.apiCard}>
@@ -216,18 +232,35 @@ export default function App() {
             {isFetchingApiTask ? (
               <Text style={styles.mutedText}>Fetching a public task...</Text>
             ) : (
-              <Text style={styles.apiTitle}>
-                {apiTask ? apiTask.title : "No suggestion available."}
-              </Text>
+              <>
+                <Text style={styles.apiTitle}>
+                  {apiTask ? apiTask.title : "No suggestion available."}
+                </Text>
+                {apiError ? (
+                  <Text style={styles.errorText}>{apiError}</Text>
+                ) : null}
+              </>
             )}
           </View>
-          <TouchableOpacity
-            style={[styles.smallButton, !apiTask && styles.disabledButton]}
-            onPress={handleAddApiTask}
-            disabled={!apiTask}
-          >
-            <Text style={styles.smallButtonText}>Add</Text>
-          </TouchableOpacity>
+          <View style={styles.apiActions}>
+            <TouchableOpacity
+              style={[styles.smallButton, !apiTask && styles.disabledButton]}
+              onPress={handleAddApiTask}
+              disabled={!apiTask}
+            >
+              <Text style={styles.smallButtonText}>Add</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.refreshButton,
+                isFetchingApiTask && styles.disabledButton,
+              ]}
+              onPress={fetchApiTask}
+              disabled={isFetchingApiTask}
+            >
+              <Text style={styles.refreshButtonText}>Refresh</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.toolbar}>
@@ -324,6 +357,9 @@ const styles = StyleSheet.create({
   apiTextWrap: {
     flex: 1,
   },
+  apiActions: {
+    gap: 8,
+  },
   apiTitle: {
     color: "#364154",
     fontSize: 14,
@@ -350,6 +386,25 @@ const styles = StyleSheet.create({
   smallButtonText: {
     color: "#ffffff",
     fontWeight: "800",
+  },
+  refreshButton: {
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    borderColor: "#b7caef",
+    borderRadius: 8,
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  refreshButtonText: {
+    color: "#2155CD",
+    fontWeight: "800",
+  },
+  errorText: {
+    color: "#d92d20",
+    fontSize: 13,
+    fontWeight: "700",
+    marginTop: 6,
   },
   disabledButton: {
     opacity: 0.45,
